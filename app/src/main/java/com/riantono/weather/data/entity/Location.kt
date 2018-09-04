@@ -7,17 +7,15 @@ import android.arch.persistence.room.PrimaryKey
 
 
 @Entity(tableName = "tbl_location")
-class Location {
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
-    @ColumnInfo(name = "latitude")
-    val latitude: Double = 0.0
-    @ColumnInfo(name = "longitude")
-    val longitude: Double = 0.0
-    @ColumnInfo(name = "address")
-    val address: String = ""
-    @ColumnInfo(name = "city")
-    val city: String = ""
-    @ColumnInfo(name = "country")
-    val country: String = ""
-}
+data class Location(@PrimaryKey(autoGenerate = true)
+               val id: Int,
+               @ColumnInfo(name = "latitude")
+               val latitude: Double,
+               @ColumnInfo(name = "longitude")
+               val longitude: Double,
+               @ColumnInfo(name = "address")
+               val address: String,
+               @ColumnInfo(name = "city")
+               val city: String,
+               @ColumnInfo(name = "country")
+               val country: String)

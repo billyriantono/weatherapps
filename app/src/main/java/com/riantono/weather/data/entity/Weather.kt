@@ -9,18 +9,20 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "tbl_weather",
         foreignKeys = [(ForeignKey(entity = Location::class,
                 parentColumns = arrayOf("id"),
-                childColumns = arrayOf("location_id"), onDelete = CASCADE))])
+                childColumns = arrayOf("location_id"), onDelete = CASCADE, onUpdate = CASCADE))])
 class Weather {
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
     @ColumnInfo(name = "location_id")
     val locationId: Int = 0
-    @ColumnInfo(name = "longitude")
-    val longitude: Double = 0.0
-    @ColumnInfo(name = "address")
-    val address: String = ""
-    @ColumnInfo(name = "city")
-    val city: String = ""
-    @ColumnInfo(name = "country")
-    val country: String = ""
+    @ColumnInfo(name = "timestamp")
+    val timestamp: Long = 0
+    @ColumnInfo(name = "weather")
+    val weather: String = ""
+    @ColumnInfo(name = "temp")
+    val temp: Double = 0.0
+    @ColumnInfo(name = "pressure")
+    val pressure: Double = 0.0
+    @ColumnInfo(name = "humidity")
+    val humidity: Double = 0.0
 }

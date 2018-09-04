@@ -1,5 +1,6 @@
 package com.riantono.weather.data.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.riantono.weather.base.BaseDao
@@ -13,11 +14,11 @@ interface LocationDao : BaseDao<Location> {
     fun findOneItemByLatitudeAndLongitude(latitude: Double, longitude: Double): Location
 
     @Query("SELECT * FROM tbl_location ORDER BY id DESC")
-    override fun findAll(): List<Location>
+    override fun findAll(): LiveData<List<Location>>
 
     @Query("DELETE FROM tbl_location where id = :id")
     override fun delete(id: Long)
 
     @Query("SELECT * FROM tbl_location WHERE id = :id ORDER BY id DESC")
-    override fun findOneItem(id: Long)
+    override fun findOneItem(id: Long): LiveData<Location>
 }

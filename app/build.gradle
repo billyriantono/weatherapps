@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
     defaultConfig {
         applicationId "com.riantono.weather"
-        minSdkVersion 19
+        minSdkVersion build_versions.min_sdk
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -20,14 +21,50 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //Support Library
+    implementation deps.support.app_compat
+    implementation deps.support.recyclerview
+    implementation deps.support.cardview
+    implementation deps.support.design
+
+    //Navigation Library
+    implementation deps.navigation.fragment_ktx
+
+    //Room DB
+    implementation deps.room.runtime
+    kapt deps.room.compiler
+    androidTestImplementation deps.room.testing
+
+    //Lifecycle Library
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.java8
+    kapt deps.lifecycle.compiler
+
+    //Retrofit Library
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+
+    //Glide
+    implementation deps.glide.runtime
+
+    //Constraint Layout Library
+    implementation deps.constraint_layout
+
+    // Kotlin Library
+    implementation deps.kotlin.stdlib
+
+    //Timber
+    implementation deps.timber
 }

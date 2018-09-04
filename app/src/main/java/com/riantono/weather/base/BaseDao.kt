@@ -7,6 +7,6 @@ import android.arch.persistence.room.Dao
 interface BaseDao<T> {
     fun insert(item : T)
     fun findAll() : LiveData<List<T>>
-    fun delete(id : Long)
-    fun findOneItem(id : Long) : LiveData<T>
+    fun delete(id : Int)
+    fun findOneItem(id : Int) : LiveData<T>
 }

@@ -17,8 +17,8 @@ interface LocationDao : BaseDao<Location> {
     override fun findAll(): LiveData<List<Location>>
 
     @Query("DELETE FROM tbl_location where id = :id")
-    override fun delete(id: Long)
+    override fun delete(id: Int)
 
     @Query("SELECT * FROM tbl_location WHERE id = :id ORDER BY id DESC")
-    override fun findOneItem(id: Long): LiveData<Location>
+    override fun findOneItem(id: Int): LiveData<Location>
 }

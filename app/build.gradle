@@ -4,6 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-allopen'
 apply plugin: 'androidx.navigation.safeargs'
 
+Properties props = loadProperties("./config.properties")
 android {
     compileSdkVersion build_versions.target_sdk
     buildToolsVersion build_versions.build_tools
@@ -15,6 +16,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'int', 'ROOM_DATABASE_VERSION', '1'
+        buildConfigField 'String', 'OPEN_WEATHER_BASE_API' , props.getProperty("OPEN_WEATHER_BASE_API_URL")
     }
     buildTypes {
         release {

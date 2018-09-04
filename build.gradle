@@ -15,6 +15,14 @@ buildscript {
     }
 }
 
+def loadProperties(String path) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(file(path)))
+    return props
+}
+
+ext.loadProperties = this.&loadProperties
+
 allprojects {
     addRepos(repositories)
 }

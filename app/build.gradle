@@ -17,7 +17,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'int', 'ROOM_DATABASE_VERSION', '1'
-        buildConfigField 'String', 'OPEN_WEATHER_BASE_API' , props.getProperty("OPEN_WEATHER_BASE_API_URL")
+        buildConfigField 'String', 'OPEN_WEATHER_BASE_API' , '"' + props.getProperty("OPEN_WEATHER_BASE_API_URL") + '"'
     }
     buildTypes {
         release {

@@ -3,4 +3,5 @@
     <string name="openweather_icon_url">http://openweathermap.org/img/w/%s.png</string>
     <string name="degree_placeholder">%s &#xb0;</string>
     <string name="btn_search_city">Search City</string>
+    <string name="menu_settings">Settings</string>
 </resources>

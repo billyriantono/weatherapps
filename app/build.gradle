@@ -8,7 +8,7 @@ apply plugin: 'androidx.navigation.safeargs'
 Properties props = loadProperties("./config.properties")
 android {
     compileSdkVersion build_versions.target_sdk
-    buildToolsVersion build_versions.build_tools
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.riantono.weather"
         minSdkVersion build_versions.min_sdk

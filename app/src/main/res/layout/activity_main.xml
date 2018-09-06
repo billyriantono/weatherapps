@@ -38,9 +38,9 @@
                 style="@style/TextAppearanceAdditionalInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/iv_icon_humidity"
-                android:layout_alignStart="@+id/iv_icon_humidity"
                 android:layout_below="@+id/iv_icon_humidity"
+                android:layout_alignStart="@+id/iv_icon_humidity"
+                android:layout_alignEnd="@+id/iv_icon_humidity"
                 android:gravity="center"
                 android:text="100" />
 
@@ -58,8 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="35dp"
+                android:layout_marginRight="16dp"
                 android:src="@drawable/ic_wind_white" />
 
             <TextView
@@ -67,9 +67,9 @@
                 style="@style/TextAppearanceAdditionalInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/iv_icon_wind_speed"
-                android:layout_alignStart="@+id/iv_icon_wind_speed"
                 android:layout_below="@+id/iv_icon_wind_speed"
+                android:layout_alignStart="@+id/iv_icon_wind_speed"
+                android:layout_alignEnd="@+id/iv_icon_wind_speed"
                 android:gravity="center"
                 android:text="100" />
 
@@ -108,8 +108,8 @@
             android:id="@+id/tv_empty_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:text="Ooooppsss ... you didn't have any saved city yet." />
 
         <Button
@@ -119,6 +119,15 @@
             android:layout_marginTop="@dimen/size_activity_margin"
             android:text="@string/btn_search_city" />
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_search_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_activity_margin"
+        android:src="@drawable/ic_add_location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -3,10 +3,7 @@ package com.riantono.weather
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,22 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Today in Jakarta"
 
-        var mButtonAddCity: Button = findViewById(R.id.btn_add_search_city)
-        mButtonAddCity.setOnClickListener { Navigation.createNavigateOnClickListener(R.id.goToSettingAction) }
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu_app, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.menu_settings -> {
-
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        val host: NavHostFragment = supportFragmentManager
+                .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
     }
 }

@@ -4,4 +4,6 @@
     <dimen name="size_activity_margin">@dimen/size_16dp</dimen>
     <dimen name="size_16dp">16dp</dimen>
     <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_height_form_input">40dp</dimen>
+    <dimen name="size_padding_text">8dp</dimen>
 </resources>

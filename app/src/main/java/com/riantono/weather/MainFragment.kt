@@ -21,11 +21,11 @@ class MainFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_main, container, false)
 
         view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_cityDetailFragment, null)
+                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_searchCityFragment, null)
         )
 
         view.findViewById<Button>(R.id.btn_add_search_city)?.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_cityDetailFragment, null)
+                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_searchCityFragment, null)
         )
         // Inflate the layout for this fragment
         return view

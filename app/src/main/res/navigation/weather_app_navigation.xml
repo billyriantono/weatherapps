@@ -13,10 +13,18 @@
             app:destination="@id/cityDetailFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_searchCityFragment"
+            app:destination="@id/searchCityFragment" />
     </fragment>
     <fragment
         android:id="@+id/cityDetailFragment"
         android:name="com.riantono.weather.CityDetailFragment"
         android:label="fragment_city_detail"
         tools:layout="@layout/fragment_city_detail" />
+    <fragment
+        android:id="@+id/searchCityFragment"
+        android:name="com.riantono.weather.SearchCityFragment"
+        android:label="fragment_search_city"
+        tools:layout="@layout/fragment_search_city" />
 </navigation>

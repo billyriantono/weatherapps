@@ -2,27 +2,33 @@ package com.riantono.weather
 
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.Button
+import androidx.navigation.Navigation
 
 /**
- * A simple [Fragment] subclass.
+ * Main Fragment
  *
  */
 class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        var view = inflater.inflate(R.layout.fragment_main, container, false)
+
+        view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_cityDetailFragment, null)
+        )
+
+        view.findViewById<Button>(R.id.btn_add_search_city)?.setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_cityDetailFragment, null)
+        )
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return view
     }
 
 

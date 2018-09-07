@@ -18,7 +18,7 @@
     </style>
 
     <style name="TextAppeareanceDegree" parent="TextAppearanceInformation">
-        <item name="android:textSize">80sp</item>
+        <item name="android:textSize">60sp</item>
     </style>
 
     <style name="TextAppeareanceWeatherMain" parent="TextAppearanceInformation">

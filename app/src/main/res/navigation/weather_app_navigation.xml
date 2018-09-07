@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.riantono.weather.ui.fragments.MainFragment"
+        android:name="com.riantono.weather.ui.fragments.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action

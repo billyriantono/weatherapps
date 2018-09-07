@@ -9,9 +9,9 @@ import retrofit2.http.Query
 interface WeatherApiService {
 
     @GET("weather")
-    fun getWeatherOnCurrentLocation(@Query("lat") latitude: Double, @Query("lon") longitude: Double): Observable<Weather>
+    fun getWeatherOnCurrentLocation(@Query("lat") latitude: Double, @Query("lon") longitude: Double, @Query("appid") appKey: String): Observable<Weather>
 
     @GET("forecast")
-    fun getForecaseOnSpecificLocation(@Query("lat") latitude: Double, @Query("lon") longitude: Double): Observable<Forecast>
+    fun getForecaseOnSpecificLocation(@Query("lat") latitude: Double, @Query("lon") longitude: Double, @Query("appid") appKey: String): Observable<Forecast>
 
 }

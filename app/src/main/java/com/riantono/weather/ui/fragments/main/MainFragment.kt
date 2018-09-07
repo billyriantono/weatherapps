@@ -1,8 +1,11 @@
-package com.riantono.weather.ui.fragments
+package com.riantono.weather.ui.fragments.main
 
 
 import android.Manifest
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
 import android.location.Location
 import android.location.LocationListener
 import android.os.Bundle
@@ -15,10 +18,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.google.android.gms.common.api.internal.LifecycleFragment
 import com.riantono.weather.R
+import com.riantono.weather.app.WeatherAppApplication
+import com.riantono.weather.databinding.FragmentMainBinding
+import com.riantono.weather.ui.fragments.main.dagger.DaggerMainComponent
+import com.riantono.weather.ui.fragments.main.dagger.MainModule
 import com.riantono.weather.ui.lifecycle.LiveLocationManager
 import timber.log.Timber
+import javax.inject.Inject
 
 
 /**
@@ -27,12 +34,28 @@ import timber.log.Timber
  */
 class MainFragment : Fragment() {
 
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+    lateinit var viewModel: MainViewModel
+    lateinit var binding: FragmentMainBinding
+
     private var gpsListener: LocationListener = MyLocationListener()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        DaggerMainComponent.builder()
+                .appComponent((activity?.application as WeatherAppApplication).appComponent)
+                .mainModule(MainModule())
+                .build().inject(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
+        var view = binding.root
+
+        binding.setLifecycleOwner(this)
         view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_searchCityFragment, null)
         )
@@ -52,10 +75,22 @@ class MainFragment : Fragment() {
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this@MainFragment.activity!!,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    MainFragment.REQUEST_LOCATION_PERMISSION)
+                    REQUEST_LOCATION_PERMISSION)
         } else {
             bindLocationListener()
         }
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.let { lifecycle.addObserver(it) }
+
+        viewModel.currentCityWeatherData.observe(this, Observer { weatherData ->
+            weatherData.run {
+                Timber.d("Perubahan Cuaca : " + weatherData?.temp)
+            }
+        })
+
+        binding.viewModel = viewModel
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -77,7 +112,8 @@ class MainFragment : Fragment() {
 
     private inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Timber.d("Current Location : " + location.latitude + "," + location.longitude);
+            Timber.d("Current Location : " + location.latitude + "," + location.longitude)
+            viewModel.getCurrentWeather(location.latitude, location.longitude)
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}

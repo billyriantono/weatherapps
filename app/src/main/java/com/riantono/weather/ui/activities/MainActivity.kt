@@ -1,9 +1,10 @@
-package com.riantono.weather
+package com.riantono.weather.ui.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
+import com.riantono.weather.R
 
 class MainActivity : AppCompatActivity() {
 

@@ -31,6 +31,7 @@ versions.kotlin = "1.2.51"
 versions.paging = "1.0.1"
 versions.navigation = "1.0.0-alpha04"
 versions.work = "1.0.0-alpha08"
+versions.location = "15.0.1"
 def deps = [:]
 
 def support = [:]
@@ -64,6 +65,7 @@ deps.arch_core = arch_core
 def retrofit = [:]
 retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 retrofit.gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.rxJava = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 deps.retrofit = retrofit
 deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging_interceptor}"
 
@@ -116,6 +118,11 @@ navigation.fragment_ktx = "android.arch.navigation:navigation-fragment-ktx:$vers
 navigation.safe_args_plugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
 navigation.testing_ktx = "android.arch.navigation:navigation-testing-ktx:$versions.navigation"
 deps.navigation = navigation
+
+def location = [:]
+location.maps = "com.google.android.gms:play-services-maps:$versions.location"
+location.places = "com.google.android.gms:play-services-places:$versions.location"
+deps.location = location
 
 ext.deps = deps
 

@@ -65,6 +65,9 @@ dependencies {
     //Retrofit Library
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
+    implementation deps.retrofit.rxJava
+    implementation deps.okhttp_logging_interceptor
+
 
     //Glide
     implementation deps.glide.runtime
@@ -81,4 +84,16 @@ dependencies {
     //RX
     implementation deps.rxjava2
     implementation deps.rx_android
+
+    //Google Places
+    implementation deps.location.maps
+    implementation deps.location.places
+
+    //Dagger
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+
 }

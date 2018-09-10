@@ -90,6 +90,9 @@ dependencies {
     implementation deps.location.places
     implementation deps.location.location
 
+    //Paging Library
+    implementation deps.paging
+
     //Dagger
     implementation deps.dagger.runtime
     implementation deps.dagger.android

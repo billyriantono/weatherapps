@@ -100,12 +100,6 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.let { lifecycle.addObserver(it) }
 
-        viewModel.currentCityWeatherData.observe(this, Observer { weatherData ->
-            weatherData.run {
-                Timber.d("Perubahan Cuaca : " + weatherData?.temp)
-            }
-        })
-
         binding.viewModel = viewModel
 
     }

@@ -31,14 +31,14 @@ class LiveLocationManager {
         @SuppressLint("MissingPermission")
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         fun addLocationListener() {
-            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager;
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10.02F, locationListener);
-            Log.d("LiveLocationManager", "Listener added");
+            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
+            Log.d("LiveLocationManager", "Listener added")
 
             val lastLocation = locationManager.getLastKnownLocation(
-                    LocationManager.GPS_PROVIDER);
+                    LocationManager.GPS_PROVIDER)
             if (lastLocation != null) {
-                locationListener.onLocationChanged(lastLocation);
+                locationListener.onLocationChanged(lastLocation)
             }
         }
 
@@ -46,7 +46,7 @@ class LiveLocationManager {
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         fun removeLocationListener() {
             locationManager.removeUpdates(locationListener);
-            Log.d("LiveLocationManager", "Listener removed");
+            Log.d("LiveLocationManager", "Listener removed")
         }
     }
 }

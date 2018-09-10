@@ -1,5 +1,6 @@
 package com.riantono.weather.ui.fragments.main.dagger
 
+import android.content.Context
 import com.riantono.weather.data.mapper.WeatherMapper
 import com.riantono.weather.repository.WeatherRepository
 import com.riantono.weather.repository.services.WeatherApiService
@@ -10,12 +11,13 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 
 @Module
-class MainModule @Inject constructor() {
+class MainModule @Inject constructor(context: Context) {
+    private val context = context
 
     @MainScope
     @Provides
     fun provideViewModelFactory(weatherRepository: WeatherRepository, weatherMapper: WeatherMapper): MainViewModelFactory {
-        return MainViewModelFactory(weatherRepository, weatherMapper)
+        return MainViewModelFactory(context, weatherRepository, weatherMapper)
     }
 
     @MainScope

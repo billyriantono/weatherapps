@@ -122,6 +122,7 @@ deps.navigation = navigation
 def location = [:]
 location.maps = "com.google.android.gms:play-services-maps:$versions.location"
 location.places = "com.google.android.gms:play-services-places:$versions.location"
+location.location = "com.google.android.gms:play-services-location:$versions.location"
 deps.location = location
 
 ext.deps = deps

@@ -1,6 +1,11 @@
 package com.riantono.weather.ui.fragments.main
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
+import android.content.Intent
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.riantono.weather.base.BaseViewModel
 import com.riantono.weather.data.mapper.WeatherMapper
 import com.riantono.weather.repository.WeatherRepository
@@ -13,10 +18,11 @@ import javax.inject.Inject
 import timber.log.Timber
 
 
-class MainViewModel @Inject constructor(weatherRepository: WeatherRepository, weatherMapper: WeatherMapper) : BaseViewModel() {
-    var weatherRepository = weatherRepository
-    var weatherMapper = weatherMapper
+class MainViewModel @Inject constructor(context: Context, weatherRepository: WeatherRepository, weatherMapper: WeatherMapper) : BaseViewModel() {
+    val weatherRepository = weatherRepository
+    val weatherMapper = weatherMapper
     val currentCityWeatherData = MutableLiveData<WeatherModel>()
+    val context = context
 
     fun getCurrentWeather(latitude: Double, longitude: Double) {
         weatherRepository.getWeatherOnSpecificLocation(latitude, longitude)
@@ -30,5 +36,16 @@ class MainViewModel @Inject constructor(weatherRepository: WeatherRepository, we
 
                 }).collect()
 
+    }
+
+    fun onHandlePlaceAutoComplete(resultCode: Int, data: Intent?) {
+        if (resultCode.equals(RESULT_OK)) {
+            val place: Place = PlaceAutocomplete.getPlace(context, data)
+            getCurrentWeather(place.latLng.latitude, place.latLng.longitude)
+        } else if (resultCode.equals(PlaceAutocomplete.RESULT_ERROR)) {
+
+        } else {
+
+        }
     }
 }

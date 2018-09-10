@@ -2,8 +2,10 @@ package com.riantono.weather.ui.fragments.main
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.location.Location
@@ -18,6 +20,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.AutocompleteFilter
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.riantono.weather.R
 import com.riantono.weather.app.WeatherAppApplication
 import com.riantono.weather.databinding.FragmentMainBinding
@@ -36,17 +42,21 @@ class MainFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
+
     lateinit var viewModel: MainViewModel
+
     lateinit var binding: FragmentMainBinding
 
-    private var gpsListener: LocationListener = MyLocationListener()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DaggerMainComponent.builder()
                 .appComponent((activity?.application as WeatherAppApplication).appComponent)
-                .mainModule(MainModule())
+                .mainModule(MainModule(this@MainFragment.activity!!))
                 .build().inject(this)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainFragment.context!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,15 +66,22 @@ class MainFragment : Fragment() {
         var view = binding.root
 
         binding.setLifecycleOwner(this)
-        view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_searchCityFragment, null)
-        )
+        view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener { showAutocompletePlaces() }
 
-        view.findViewById<Button>(R.id.btn_add_search_city)?.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_searchCityFragment, null)
-        )
+        view.findViewById<Button>(R.id.btn_add_search_city)?.setOnClickListener { showAutocompletePlaces() }
         // Inflate the layout for this fragment
         return view
+    }
+
+    private fun showAutocompletePlaces() {
+        val typeFilter = AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build()
+
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                .setFilter(typeFilter)
+                .build(this@MainFragment.activity)
+        startActivityForResult(intent, REQUEST_AUTO_COMPLETE_PLACE)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -77,7 +94,7 @@ class MainFragment : Fragment() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                     REQUEST_LOCATION_PERMISSION)
         } else {
-            bindLocationListener()
+            getCurrentLocation()
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
@@ -93,36 +110,36 @@ class MainFragment : Fragment() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode.equals(REQUEST_AUTO_COMPLETE_PLACE)) {
+            viewModel.onHandlePlaceAutoComplete(resultCode, data)
+        }
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0].equals(PackageManager.PERMISSION_GRANTED) && grantResults[1].equals(PackageManager.PERMISSION_GRANTED)) {
-            bindLocationListener()
+            getCurrentLocation()
         } else {
             Toast.makeText(this@MainFragment.context, "We need your location, for getting the current weather", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun bindLocationListener() {
-        LiveLocationManager().bindLocationListener(this@MainFragment, gpsListener, activity?.applicationContext!!)
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            run {
+                if (location != null) {
+                    viewModel.getCurrentWeather(location.latitude, location.longitude)
+                }
+            }
+        }
     }
 
     companion object {
         const val REQUEST_LOCATION_PERMISSION = 1
-    }
-
-    private inner class MyLocationListener : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            Timber.d("Current Location : " + location.latitude + "," + location.longitude)
-            viewModel.getCurrentWeather(location.latitude, location.longitude)
-        }
-
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-
-        override fun onProviderEnabled(provider: String) {
-            Toast.makeText(this@MainFragment.context,
-                    "Provider enabled: $provider", Toast.LENGTH_SHORT).show()
-        }
-
-        override fun onProviderDisabled(provider: String) {}
+        const val REQUEST_AUTO_COMPLETE_PLACE = 2
     }
 }

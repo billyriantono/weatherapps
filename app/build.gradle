@@ -88,6 +88,7 @@ dependencies {
     //Google Places
     implementation deps.location.maps
     implementation deps.location.places
+    implementation deps.location.location
 
     //Dagger
     implementation deps.dagger.runtime

@@ -9,4 +9,8 @@ class WeatherRepository(weatherApiService: WeatherApiService) {
     fun getWeatherOnSpecificLocation(latitude: Double, longitude: Double): Observable<Weather> {
         return weatherApiService.getWeatherOnCurrentLocation(latitude, longitude,"3087c9d59588631230e7e1e073dd541e")
     }
+
+    fun getWeatherByAddress(address : String): Observable<Weather> {
+        return weatherApiService.getWeatherOnCurrentLocation(address,"3087c9d59588631230e7e1e073dd541e")
+    }
 }

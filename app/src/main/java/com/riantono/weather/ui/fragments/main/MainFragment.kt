@@ -5,15 +5,17 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.location.Location
-import android.location.LocationListener
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +29,11 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.riantono.weather.R
 import com.riantono.weather.app.WeatherAppApplication
 import com.riantono.weather.databinding.FragmentMainBinding
+import com.riantono.weather.ui.fragments.CityDetailFragment
+import com.riantono.weather.ui.fragments.main.adapters.SavedLocationAdapter
 import com.riantono.weather.ui.fragments.main.dagger.DaggerMainComponent
 import com.riantono.weather.ui.fragments.main.dagger.MainModule
-import com.riantono.weather.ui.lifecycle.LiveLocationManager
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
 
@@ -69,8 +72,19 @@ class MainFragment : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.btn_search_city)?.setOnClickListener { showAutocompletePlaces() }
 
         view.findViewById<Button>(R.id.btn_add_search_city)?.setOnClickListener { showAutocompletePlaces() }
+
         // Inflate the layout for this fragment
         return view
+    }
+
+    private fun showEmptyList(isEmptyList: Boolean) {
+        if (isEmptyList) {
+            rl_empty_view?.visibility = View.VISIBLE
+            rv_list_saved_city?.visibility = View.GONE
+        } else {
+            rl_empty_view?.visibility = View.GONE
+            rv_list_saved_city?.visibility = View.VISIBLE
+        }
     }
 
     private fun showAutocompletePlaces() {
@@ -101,6 +115,23 @@ class MainFragment : Fragment() {
         viewModel.let { lifecycle.addObserver(it) }
 
         binding.viewModel = viewModel
+
+        var onItemClickInterface: SavedLocationAdapter.OnCityClickListener = object : SavedLocationAdapter.OnCityClickListener {
+            override fun onClick(item: com.riantono.weather.data.entity.Location?) {
+                val bundle = Bundle()
+                bundle.putParcelable(CityDetailFragment.KEY_SELECTED_CITY, item)
+                Navigation.createNavigateOnClickListener(R.id.next_to_city_detail, bundle)
+            }
+        }
+        val adapter = SavedLocationAdapter(onItemClickInterface)
+        rv_list_saved_city?.adapter = adapter
+        rv_list_saved_city?.layoutManager = LinearLayoutManager(this@MainFragment.context, LinearLayoutManager.VERTICAL, false)
+
+        viewModel.savedCityListHistory.observe(this, Observer<PagedList<com.riantono.weather.data.entity.Location>> {
+            Log.d("Activity", "list: ${it?.size}")
+            showEmptyList(it?.size == 0)
+            adapter.submitList(it)
+        })
 
     }
 

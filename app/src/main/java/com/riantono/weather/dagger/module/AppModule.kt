@@ -23,8 +23,8 @@ class AppModule @Inject public constructor(app: Application) {
 
     @AppScope
     @Provides
-    fun provideDb(app: Application): WeatherRoomDatabase {
-        return Room.databaseBuilder(app, WeatherRoomDatabase::class.java, "weather_apps.db")
+    fun provideDb(context: Context): WeatherRoomDatabase {
+        return Room.databaseBuilder(context, WeatherRoomDatabase::class.java, "weather_apps.db")
                 .fallbackToDestructiveMigration().build()
     }
 

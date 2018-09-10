@@ -18,11 +18,11 @@ interface LocationDao : BaseDao<Location> {
     fun findOneItemByLatitudeAndLongitude(latitude: Double, longitude: Double): DataSource.Factory<Int, Location>
 
     @Query("SELECT * FROM tbl_location ORDER BY id DESC")
-    override fun findAll(): DataSource.Factory<Int, List<Location>>
+    override fun findAll(): DataSource.Factory<Int, Location>
 
     @Query("DELETE FROM tbl_location where id = :id")
     override fun delete(id: Int)
 
     @Query("SELECT * FROM tbl_location WHERE id = :id ORDER BY id DESC")
-    override fun findOneItem(id: Int): DataSource.Factory<Int, Location>
+    override fun findOneItem(id: Int): LiveData<Location>
 }

@@ -9,22 +9,14 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_cityDetailFragment"
+            android:id="@+id/next_to_city_detail"
             app:destination="@id/cityDetailFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_mainFragment_to_searchCityFragment"
-            app:destination="@id/searchCityFragment" />
     </fragment>
     <fragment
         android:id="@+id/cityDetailFragment"
         android:name="com.riantono.weather.ui.fragments.CityDetailFragment"
         android:label="fragment_city_detail"
-        tools:layout="@layout/fragment_city_detail" />
-    <fragment
-        android:id="@+id/searchCityFragment"
-        android:name="com.riantono.weather.ui.fragments.SearchCityFragment"
-        android:label="fragment_search_city"
-        tools:layout="@layout/fragment_search_city" />
+        tools:layout="@layout/fragment_city_detail" ></fragment>
 </navigation>

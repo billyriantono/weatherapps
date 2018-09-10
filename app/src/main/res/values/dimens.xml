@@ -6,4 +6,5 @@
     <dimen name="size_30dp">30dp</dimen>
     <dimen name="size_height_form_input">40dp</dimen>
     <dimen name="size_padding_text">8dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
 </resources>

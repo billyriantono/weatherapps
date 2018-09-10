@@ -1,7 +1,10 @@
 package com.riantono.weather.ui.fragments.main.dagger
 
 import android.content.Context
+import com.riantono.weather.data.WeatherRoomDatabase
+import com.riantono.weather.data.dao.LocationDao
 import com.riantono.weather.data.mapper.WeatherMapper
+import com.riantono.weather.repository.LocationRepository
 import com.riantono.weather.repository.WeatherRepository
 import com.riantono.weather.repository.services.WeatherApiService
 import com.riantono.weather.ui.fragments.main.MainViewModelFactory
@@ -16,8 +19,20 @@ class MainModule @Inject constructor(context: Context) {
 
     @MainScope
     @Provides
-    fun provideViewModelFactory(weatherRepository: WeatherRepository, weatherMapper: WeatherMapper): MainViewModelFactory {
-        return MainViewModelFactory(context, weatherRepository, weatherMapper)
+    fun provideViewModelFactory(weatherRepository: WeatherRepository, locationRepository: LocationRepository, weatherMapper: WeatherMapper): MainViewModelFactory {
+        return MainViewModelFactory(context, weatherRepository, locationRepository, weatherMapper)
+    }
+
+    @MainScope
+    @Provides
+    fun provideLocationRepository(locationDao: LocationDao): LocationRepository {
+        return LocationRepository(locationDao)
+    }
+
+    @MainScope
+    @Provides
+    fun provideLocationDao(roomDatabase: WeatherRoomDatabase): LocationDao {
+        return roomDatabase.locationDao()
     }
 
     @MainScope

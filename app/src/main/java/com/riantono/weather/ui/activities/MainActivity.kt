@@ -1,9 +1,10 @@
-package com.riantono.weather
+package com.riantono.weather.ui.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
+import androidx.navigation.fragment.NavHostFragment
+import com.riantono.weather.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,11 +17,9 @@ class MainActivity : AppCompatActivity() {
         mToolbar = findViewById(R.id.header)
         setSupportActionBar(mToolbar)
 
-        supportActionBar?.title = "Today in Jakarta"
-    }
+        supportActionBar?.title = "Weather Today"
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu_app, menu)
-        return super.onCreateOptionsMenu(menu)
+        val host: NavHostFragment = supportFragmentManager
+                .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
     }
 }

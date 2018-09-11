@@ -1,22 +1,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/mainFragment">
+
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.riantono.weather.ui.fragments.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main">
+        android:label="MainFragment" >
         <action
-            android:id="@+id/next_to_city_detail"
+            android:id="@+id/go_to_city_detail"
             app:destination="@id/cityDetailFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/cityDetailFragment"
-        android:name="com.riantono.weather.ui.fragments.CityDetailFragment"
-        android:label="fragment_city_detail"
-        tools:layout="@layout/fragment_city_detail" ></fragment>
+        android:name="com.riantono.weather.ui.fragments.citydetail.CityDetailFragment"
+        android:label="CityDetailFragment" />
 </navigation>

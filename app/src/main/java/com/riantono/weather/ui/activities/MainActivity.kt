@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         mToolbar = findViewById(R.id.header)
         setSupportActionBar(mToolbar)
 
-        supportActionBar?.title = "Today in Jakarta"
+        supportActionBar?.title = "Weather Today"
 
         val host: NavHostFragment = supportFragmentManager
                 .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return

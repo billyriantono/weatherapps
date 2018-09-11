@@ -29,7 +29,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.riantono.weather.R
 import com.riantono.weather.app.WeatherAppApplication
 import com.riantono.weather.databinding.FragmentMainBinding
-import com.riantono.weather.ui.fragments.CityDetailFragment
+import com.riantono.weather.ui.fragments.citydetail.CityDetailFragment
 import com.riantono.weather.ui.fragments.main.adapters.SavedLocationAdapter
 import com.riantono.weather.ui.fragments.main.dagger.DaggerMainComponent
 import com.riantono.weather.ui.fragments.main.dagger.MainModule
@@ -77,27 +77,6 @@ class MainFragment : Fragment() {
         return view
     }
 
-    private fun showEmptyList(isEmptyList: Boolean) {
-        if (isEmptyList) {
-            rl_empty_view?.visibility = View.VISIBLE
-            rv_list_saved_city?.visibility = View.GONE
-        } else {
-            rl_empty_view?.visibility = View.GONE
-            rv_list_saved_city?.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showAutocompletePlaces() {
-        val typeFilter = AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-                .build()
-
-        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                .setFilter(typeFilter)
-                .build(this@MainFragment.activity)
-        startActivityForResult(intent, REQUEST_AUTO_COMPLETE_PLACE)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (ActivityCompat.checkSelfPermission(this@MainFragment.context!!,
@@ -115,12 +94,13 @@ class MainFragment : Fragment() {
         viewModel.let { lifecycle.addObserver(it) }
 
         binding.viewModel = viewModel
+        val controller = Navigation.findNavController(this@MainFragment.activity!!, R.id.my_nav_host_fragment)
 
         var onItemClickInterface: SavedLocationAdapter.OnCityClickListener = object : SavedLocationAdapter.OnCityClickListener {
             override fun onClick(item: com.riantono.weather.data.entity.Location?) {
                 val bundle = Bundle()
                 bundle.putParcelable(CityDetailFragment.KEY_SELECTED_CITY, item)
-                Navigation.createNavigateOnClickListener(R.id.next_to_city_detail, bundle)
+                controller.navigate(R.id.go_to_city_detail, bundle)
             }
         }
         val adapter = SavedLocationAdapter(onItemClickInterface)
@@ -161,6 +141,27 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showEmptyList(isEmptyList: Boolean) {
+        if (isEmptyList) {
+            rl_empty_view?.visibility = View.VISIBLE
+            rv_list_saved_city?.visibility = View.GONE
+        } else {
+            rl_empty_view?.visibility = View.GONE
+            rv_list_saved_city?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showAutocompletePlaces() {
+        val typeFilter = AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build()
+
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                .setFilter(typeFilter)
+                .build(this@MainFragment.activity)
+        startActivityForResult(intent, REQUEST_AUTO_COMPLETE_PLACE)
     }
 
     companion object {

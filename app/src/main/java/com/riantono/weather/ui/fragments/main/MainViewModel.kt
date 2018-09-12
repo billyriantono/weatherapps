@@ -16,6 +16,7 @@ import com.riantono.weather.repository.WeatherRepository
 import com.riantono.weather.repository.entity.Weather
 import com.riantono.weather.ui.entity.WeatherModel
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -35,9 +36,8 @@ class MainViewModel @Inject constructor(context: Context, weatherRepository: Wea
     fun getCurrentWeather(latitude: Double, longitude: Double) {
         weatherRepository.getWeatherOnSpecificLocation(latitude, longitude)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).flatMap({ weatherResponse -> Observable.just<Weather>(weatherResponse) })
+                .observeOn(AndroidSchedulers.mainThread()).flatMap { weatherResponse -> Single.just<Weather>(weatherResponse) }
                 .subscribe({ weatherResponse ->
-                    Timber.d("Current Weather :  " + weatherResponse.main.temp)
                     currentCityWeatherData.postValue(weatherMapper.transform(weatherResponse))
                 }, { throwable ->
                     Timber.e(throwable, "Login failed: $throwable")

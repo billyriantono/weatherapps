@@ -16,13 +16,12 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 
 @Module
-class CityDetailModule @Inject constructor(context: Context) {
-    private val context = context
+class CityDetailModule @Inject constructor() {
 
     @CityDetailScope
     @Provides
     fun provideViewModelFactory(weatherRepository: WeatherRepository, listForecastMapper: ListForecastMapper): CityDetailViewModelFactory {
-        return CityDetailViewModelFactory(context, weatherRepository, listForecastMapper)
+        return CityDetailViewModelFactory(weatherRepository, listForecastMapper)
     }
 
     @CityDetailScope

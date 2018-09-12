@@ -30,11 +30,12 @@ import javax.inject.Inject
  */
 class CityDetailFragment : Fragment() {
 
+    @Inject
+    lateinit var viewModelFactory: CityDetailViewModelFactory
+
     lateinit var binding: FragmentCityDetailBinding
 
     lateinit var viewModel: CityDetailViewModel
-    @Inject
-    lateinit var viewModelFactory: CityDetailViewModelFactory
 
     private val selectedCity by lazy {
         arguments?.getParcelable<Location>(KEY_SELECTED_CITY)
@@ -43,7 +44,7 @@ class CityDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DaggerCityDetailComponent.builder().appComponent((activity?.application as WeatherAppApplication).appComponent)
-                .cityDetailModule(CityDetailModule(this@CityDetailFragment.context!!))
+                .cityDetailModule(CityDetailModule())
                 .build().inject(this@CityDetailFragment)
     }
 
@@ -78,10 +79,10 @@ class CityDetailFragment : Fragment() {
 
     private fun showEmptyList(isEmptyList: Boolean) {
         if (isEmptyList) {
-            rl_empty_view?.visibility = View.VISIBLE
+            rl_empty_forecast_view?.visibility = View.VISIBLE
             rv_list_forecast?.visibility = View.GONE
         } else {
-            rl_empty_view?.visibility = View.GONE
+            rl_empty_forecast_view?.visibility = View.GONE
             rv_list_forecast?.visibility = View.VISIBLE
         }
     }

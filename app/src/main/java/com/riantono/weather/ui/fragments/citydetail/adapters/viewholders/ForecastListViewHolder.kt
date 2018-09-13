@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import com.riantono.weather.R
 import com.riantono.weather.ui.entity.ForecastModel
-import com.riantono.weather.utils.DateUtil
 import java.text.SimpleDateFormat
 import java.util.*
 

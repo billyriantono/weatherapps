@@ -8,4 +8,6 @@ import kotlinx.android.parcel.Parcelize
 data class Weather(@field:SerializedName("dt") val dt: Long,
                    @field:SerializedName("main") val main: Main,
                    @field:SerializedName("wind") val wind: Wind,
-                   @field:SerializedName("weather") val weather: List<WeatherDetail>) : Parcelable
+                   @field:SerializedName("weather") val weather: List<WeatherDetail>,
+                   @field:SerializedName("sys") val sys: Sys,
+                   @field:SerializedName("name") val name: String) : Parcelable

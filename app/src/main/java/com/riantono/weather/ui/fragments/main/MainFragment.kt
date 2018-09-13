@@ -16,9 +16,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -130,7 +128,6 @@ class MainFragment : Fragment() {
             Toast.makeText(this@MainFragment.context, "We need your location, for getting the current weather", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {

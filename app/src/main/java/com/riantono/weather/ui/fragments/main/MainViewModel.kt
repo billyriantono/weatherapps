@@ -39,10 +39,22 @@ class MainViewModel @Inject constructor(context: Context, weatherRepository: Wea
                 .observeOn(AndroidSchedulers.mainThread()).flatMap { weatherResponse -> Single.just<Weather>(weatherResponse) }
                 .subscribe({ weatherResponse ->
                     currentCityWeatherData.postValue(weatherMapper.transform(weatherResponse))
+                    saveSelectedCity(latitude, longitude, weatherResponse.name + ", " + weatherResponse.sys.country)
                 }, { throwable ->
                     Timber.e(throwable, "Login failed: $throwable")
                 }).collect()
+    }
 
+    fun saveSelectedCity(latitude: Double, longitude: Double, address: String) {
+        ioExecutor.execute {
+            saveSelectedCity(Location(null, latitude, longitude, address))
+        }
+    }
+
+    fun saveSelectedCity(location: Location) {
+        ioExecutor.execute {
+            locationRepository.insertItem(location)
+        }
     }
 
 
@@ -50,9 +62,7 @@ class MainViewModel @Inject constructor(context: Context, weatherRepository: Wea
         if (resultCode.equals(RESULT_OK)) {
             val place: Place = PlaceAutocomplete.getPlace(context, data)
             getCurrentWeather(place.latLng.latitude, place.latLng.longitude)
-            ioExecutor.execute {
-                locationRepository.insertItem(Location(null, place.latLng.latitude, place.latLng.longitude, place.address.toString()))
-            }
+            saveSelectedCity(Location(null, place.latLng.latitude, place.latLng.longitude, place.address.toString()))
         }
     }
 }
